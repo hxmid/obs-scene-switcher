@@ -96,24 +96,16 @@ function is_game_path(path)
 end
 
 function switch_scene(scene_name)
-    local scene = obs.obs_get_scene_by_name(scene_name)
-
-    if scene == nil then
-        print("[scene switcher] ERROR: Scene '" .. scene_name .. "' does not exist.")
-        return false
-    end
-
-    local source = obs.obs_scene_get_source(scene)
+    local source = obs.obs_get_source_by_name(scene_name)
 
     if source == nil then
-        print("[scene switcher] ERROR: could not get source for scene '" .. scene_name .. "'")
-        obs.obs_scene_release(scene)
+        print("[scene switcher] ERROR: scene '" .. scene_name .. "' does not exist")
         return false
     end
 
     obs.obs_frontend_set_current_scene(source)
 
-    obs.obs_scene_release(scene)
+    obs.obs_source_release(source)
 
     print("[scene switcher] switched to scene: " .. scene_name)
 
