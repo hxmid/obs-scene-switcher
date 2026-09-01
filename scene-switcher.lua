@@ -1,7 +1,7 @@
 obs = obslua
 
-local GAMING_SCENE = "gaming"
 local NORMAL_SCENE = "normal"
+local GAMING_SCENE = "gaming"
 local POLL_INTERVAL = 500
 
 local current_is_game = nil
@@ -26,12 +26,12 @@ function script_load()
 
     obs.timer_add(check_active_window, POLL_INTERVAL)
 
-    print("[Scene Switcher] Loaded.")
+    print("[scene switcher] loaded")
 end
 
 function script_unload()
     obs.timer_remove(check_active_window)
-    print("[Scene Switcher] Unloaded.")
+    print("[scene switcher] unloaded")
 end
 
 function check_active_window()
@@ -50,10 +50,10 @@ function check_active_window()
     current_is_game = is_game
 
     if is_game then
-        print("[Scene Switcher] Game detected: " .. exe_path)
+        print("[scene switcher] name detected: " .. exe_path)
         switch_scene(GAMING_SCENE)
     else
-        print("[Scene Switcher] Non-game detected: " .. exe_path)
+        print("[scene switcher] non-game detected: " .. exe_path)
         switch_scene(NORMAL_SCENE)
     end
 end
@@ -100,21 +100,22 @@ function switch_scene(scene_name)
 
     if scene == nil then
         print("[scene switcher] ERROR: Scene '" .. scene_name .. "' does not exist.")
-        return
+        return false
     end
 
     local source = obs.obs_scene_get_source(scene)
 
     if source == nil then
-        print("[scene switcher] ERROR: Could not get source for scene '" .. scene_name .. "'.")
+        print("[scene switcher] ERROR: could not get source for scene '" .. scene_name .. "'")
         obs.obs_scene_release(scene)
-        return
+        return false
     end
 
     obs.obs_frontend_set_current_scene(source)
 
-    obs.obs_source_release(source)
     obs.obs_scene_release(scene)
 
-    print("[scene switcher] Switched to scene: " .. scene_name)
+    print("[scene switcher] switched to scene: " .. scene_name)
+
+    return true
 end
