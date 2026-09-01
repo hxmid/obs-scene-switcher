@@ -26,12 +26,12 @@ function script_load()
 
     obs.timer_add(check_active_window, POLL_INTERVAL)
 
-    print("[scene switcher] loaded")
+    print("loaded")
 end
 
 function script_unload()
     obs.timer_remove(check_active_window)
-    print("[scene switcher] unloaded")
+    print("unloaded")
 end
 
 function check_active_window()
@@ -50,10 +50,10 @@ function check_active_window()
     current_is_game = is_game
 
     if is_game then
-        print("[scene switcher] name detected: " .. exe_path)
+        print("name detected: " .. exe_path)
         switch_scene(GAMING_SCENE)
     else
-        print("[scene switcher] non-game detected: " .. exe_path)
+        print("non-game detected: " .. exe_path)
         switch_scene(NORMAL_SCENE)
     end
 end
@@ -99,7 +99,7 @@ function switch_scene(scene_name)
     local source = obs.obs_get_source_by_name(scene_name)
 
     if source == nil then
-        print("[scene switcher] ERROR: scene '" .. scene_name .. "' does not exist")
+        print("ERROR: scene '" .. scene_name .. "' does not exist")
         return false
     end
 
@@ -107,7 +107,7 @@ function switch_scene(scene_name)
 
     obs.obs_source_release(source)
 
-    print("[scene switcher] switched to scene: " .. scene_name)
+    print("switched to scene: " .. scene_name)
 
     return true
 end
